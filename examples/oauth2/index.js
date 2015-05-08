@@ -2,19 +2,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var oauth = require('./oauth-config');
 
 // Config:
 var port = process.env.PORT || 8000;
 var root = __dirname + '/';
 var sendFileConfig = { root: root };
-var oauth = {
-  authorize: 'http://127.0.0.1/oauth2/authorize',
-  token: 'http://127.0.0.1/oauth2/token',
-  key: '123abc',
-  secret: '789xyz',
-  scope: 'basic',
-  redirect: 'http://127.0.0.1:'+port+'/oauth2'
-};
 
 // App:
 var app = express();
