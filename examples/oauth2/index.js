@@ -46,7 +46,6 @@ app.get('/oauth2', function (req, res) {
         console.error(err);
       }
       json = JSON.parse(body);
-      console.log(response.headers);
       res.send(
         '<h1>Callback Query:</h1>' +
         '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
