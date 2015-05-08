@@ -21,4 +21,4 @@ module.exports = {
 };
 ```
 
-After configuring the example app, you can start a server by doing `node examples/oauth2/index.js` or `PORT=8000 node examples/oauth2/index.js`
+After configuring the example app, you can start a server by doing `node examples/oauth2/index.js` or `PORT=8000 node examples/oauth2/index.js` and navigate to http://127.0.0.1:8000/
