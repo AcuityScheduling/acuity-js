@@ -37,22 +37,39 @@ app.get('/authorize', function (req, res) {
 });
 
 app.get('/oauth2', function (req, res) {
-  var options = {
-    form: {
-      grant_type: 'authorization_code',
-      code: req.query.code,
-      redirect_uri: oauth.redirect,
-      client_id: oauth.key,
-      client_secret: oauth.secret
-    }
-  };
-  request.post(oauth.token, options, function (err, response, body) {
-    if (err) {
-      console.error(err);
-    }
-    json = JSON.parse(body);
-    res.json(json);
-  });
+  var query = req.query;
+  if (query.code && !query.error) {
+    var options = {
+      form: {
+        grant_type: 'authorization_code',
+        code: query.code,
+        redirect_uri: oauth.redirect,
+        client_id: oauth.key,
+        client_secret: oauth.secret
+      }
+    };
+    request.post(oauth.token, options, function (err, response, body) {
+      if (err) {
+        console.error(err);
+      }
+      json = JSON.parse(body);
+      console.log(response.headers);
+      res.send(
+        '<h1>Callback Query:</h1>' +
+        '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
+        '<h1>Token Request:</h1>' +
+        '<pre>'+JSON.stringify(options.form, null, '  ')+'</pre>' +
+        '<h1>Token Response:</h1>' +
+        '<pre>'+JSON.stringify(json, null, '  ')+'</pre>'
+      );
+    });
+  } else {
+    res.send(
+      '<h1>Callback Query:</h1>' +
+      '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
+      '<p>An error has occurred: ' + query.error + '.<p>'
+    );
+  }
 });
 
 // Server:
