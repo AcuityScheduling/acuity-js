@@ -1,5 +1,5 @@
 {
-  "name": "acuity-js",
+  "name": "acuity",
   "version": "0.0.1",
   "description": "Acuity Scheduling JS Dev Kit",
   "main": "index.js",
