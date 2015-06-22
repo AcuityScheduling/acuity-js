@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/authorize', function (req, res) {
-  res.redirect(oauth.authorize + '?' + [
+  res.redirect(oauth.base + '/oauth2/authorize' + '?' + [
     { key: 'scope', value: oauth.scope },
     { key: 'client_id', value: oauth.key },
     { key: 'redirect_uri', value: oauth.redirect },
@@ -41,19 +41,35 @@ app.get('/oauth2', function (req, res) {
         client_secret: oauth.secret
       }
     };
-    request.post(oauth.token, options, function (err, response, body) {
+    request.post(oauth.base + '/oauth2/token', options, function (err, response, body) {
       if (err) {
         console.error(err);
       }
       json = JSON.parse(body);
-      res.send(
-        '<h1>Callback Query:</h1>' +
-        '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
-        '<h1>Token Request:</h1>' +
-        '<pre>'+JSON.stringify(options.form, null, '  ')+'</pre>' +
-        '<h1>Token Response:</h1>' +
-        '<pre>'+JSON.stringify(json, null, '  ')+'</pre>'
-      );
+      var meOptions = {
+        url: oauth.base + '/api/v2/me',
+        headers: {
+          'Authorization': 'Bearer ' + json.access_token
+        }
+      };
+      console.log(meOptions);
+      request(meOptions, function (err, response, body) {
+        if (err) {
+          console.error(err);
+        } else {
+          var me = JSON.parse(body);
+        }
+        res.send(
+          '<h1>Callback Query:</h1>' +
+          '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
+          '<h1>Token Request:</h1>' +
+          '<pre>'+JSON.stringify(options.form, null, '  ')+'</pre>' +
+          '<h1>Token Response:</h1>' +
+          '<pre>'+JSON.stringify(json, null, '  ')+'</pre>' +
+          '<h1>GET /me:</h1>' +
+          '<pre>'+JSON.stringify(me, null, '  ')+'</pre>'
+        );
+      });
     });
   } else {
     res.send(
