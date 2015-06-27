@@ -1,4 +1,5 @@
 // Deps
+var crypto = require('crypto');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -6,16 +7,30 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 8000;
 var root = __dirname + '/';
 var sendFileConfig = { root: root };
+var secret = '123abc';
 
 // App:
 var app = express();
-app.use(bodyParser.urlencoded());
+var bodyParserMiddleware = bodyParser.urlencoded({
+  verify: function (req, res, buf, encoding) {
+
+    // Get hash of message using shared secret:
+    var hasher = crypto.createHmac('sha1', secret);
+    hasher.update(buf.toString());
+    var hash = hasher.digest('base64');
+
+    // Compare hash to Acuity signature:
+    if (hash !== req.header('X-Acuity-Signature')) {
+      throw new Error('This message was forged!');
+    }
+  }
+});
 
 app.get('/', function (req, res) {
   res.sendFile('index.html', sendFileConfig);
 });
 
-app.post('/custom-sidebar', function (req, res) {
+app.post('/custom-sidebar', bodyParserMiddleware, function (req, res) {
   setTimeout(function () {
     res.send(
       '<pre>' +
