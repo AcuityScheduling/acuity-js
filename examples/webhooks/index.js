@@ -33,6 +33,7 @@ app.get('/', function (req, res) {
 app.post('/webhook', bodyParserMiddleware, function (req, res) {
   // The message is authentic:
   console.log("The message is authentic:\n" + JSON.stringify(req.body, null, '  '));
+  res.send('');
 });
 
 // Server:
