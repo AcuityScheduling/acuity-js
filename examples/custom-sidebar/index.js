@@ -33,6 +33,7 @@ app.get('/', function (req, res) {
 app.post('/custom-sidebar', bodyParserMiddleware, function (req, res) {
   setTimeout(function () {
     res.send(
+      '<h4>Callback Example:</h4>' +
       '<pre>' +
       JSON.stringify(req.body, null, '  ') +
       '</pre>'
