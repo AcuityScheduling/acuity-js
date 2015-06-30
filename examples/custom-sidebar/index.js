@@ -15,7 +15,7 @@ var bodyParserMiddleware = bodyParser.urlencoded({
   verify: function (req, res, buf, encoding) {
 
     // Get hash of message using shared secret:
-    var hasher = crypto.createHmac('sha1', secret);
+    var hasher = crypto.createHmac('sha256', secret);
     hasher.update(buf.toString());
     var hash = hasher.digest('base64');
 
