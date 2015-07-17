@@ -8,9 +8,6 @@
 
 ```js
 module.exports = {
-  // Acuity OAuth2 authorize and token endpoints:
-  authorize: 'http://127.0.0.1/oauth2/authorize',
-  token: 'http://127.0.0.1/oauth2/token',
   // Client key and secret:
   key: '123abc',
   secret: '789xyz',

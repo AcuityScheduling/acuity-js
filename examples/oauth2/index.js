@@ -8,6 +8,7 @@ var oauth = require('./oauth-config');
 var port = process.env.PORT || 8000;
 var root = __dirname + '/';
 var sendFileConfig = { root: root };
+var base = oauth.base ? oauth.base : 'https://acuityscheduling.com';
 
 // App:
 var app = express();
@@ -19,7 +20,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/authorize', function (req, res) {
-  res.redirect(oauth.base + '/oauth2/authorize' + '?' + [
+  res.redirect(base + '/oauth2/authorize' + '?' + [
     { key: 'scope', value: oauth.scope },
     { key: 'client_id', value: oauth.key },
     { key: 'redirect_uri', value: oauth.redirect },
@@ -41,13 +42,13 @@ app.get('/oauth2', function (req, res) {
         client_secret: oauth.secret
       }
     };
-    request.post(oauth.base + '/oauth2/token', options, function (err, response, body) {
+    request.post(base + '/oauth2/token', options, function (err, response, body) {
       if (err) {
         console.error(err);
       }
       json = JSON.parse(body);
       var meOptions = {
-        url: oauth.base + '/api/v2/me',
+        url: base + '/api/v2/me',
         headers: {
           'Authorization': 'Bearer ' + json.access_token
         }
