@@ -1,84 +1,78 @@
 // Deps
 var express = require('express');
+var session = require('express-session');
+var _ = require('underscore');
 var bodyParser = require('body-parser');
 var request = require('request');
-var oauth = require('./oauth-config');
+var config = require('./config');
+var Acuity = require('../../src');
 
 // Config:
 var port = process.env.PORT || 8000;
 var root = __dirname + '/';
 var sendFileConfig = { root: root };
-var base = oauth.base ? oauth.base : 'https://acuityscheduling.com';
 
 // App:
 var app = express();
 app.use(bodyParser.json());
+app.use(session({secret: 'pwnz0rz', saveUninitialized: true, resave: false}));
 
 // Router:
 app.get('/', function (req, res) {
+  var acuity = Acuity.oauth(config);
   res.sendFile('index.html', sendFileConfig);
 });
 
 app.get('/authorize', function (req, res) {
-  res.redirect(base + '/oauth2/authorize' + '?' + [
-    { key: 'scope', value: oauth.scope },
-    { key: 'client_id', value: oauth.key },
-    { key: 'redirect_uri', value: oauth.redirect },
-    { key: 'response_type', value: 'code' },
-  ].reduce(function (query, o) {
-    return query + (query ? '&' : '') + encodeURIComponent(o.key) + '=' + encodeURIComponent(o.value);
-  }, ''));
+	// Redirect the user to the Acuity authorization endpoint.  You must
+	// choose a scope to work with.
+  var acuity = Acuity.oauth(config);
+  acuity.authorizeRedirect(res, {scope: 'api-v1'});
 });
 
 app.get('/oauth2', function (req, res) {
+
+  var acuity = Acuity.oauth(_.extend({
+    accessToken: req.session.accessToken
+  }, config));
+
   var query = req.query;
-  if (query.code && !query.error) {
-    var options = {
-      form: {
-        grant_type: 'authorization_code',
-        code: query.code,
-        redirect_uri: oauth.redirect,
-        client_id: oauth.key,
-        client_secret: oauth.secret
-      }
-    };
-    request.post(base + '/oauth2/token', options, function (err, response, body) {
-      if (err) {
-        console.error(err);
-      }
-      json = JSON.parse(body);
-      var meOptions = {
-        url: base + '/api/v2/me',
-        headers: {
-          'Authorization': 'Bearer ' + json.access_token
-        }
-      };
-      console.log(meOptions);
-      request(meOptions, function (err, response, body) {
-        if (err) {
-          console.error(err);
-        } else {
-          var me = JSON.parse(body);
-        }
-        res.send(
-          '<h1>Callback Query:</h1>' +
-          '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
-          '<h1>Token Request:</h1>' +
-          '<pre>'+JSON.stringify(options.form, null, '  ')+'</pre>' +
-          '<h1>Token Response:</h1>' +
-          '<pre>'+JSON.stringify(json, null, '  ')+'</pre>' +
-          '<h1>GET /me:</h1>' +
-          '<pre>'+JSON.stringify(me, null, '  ')+'</pre>'
-        );
-      });
-    });
-  } else {
-    res.send(
+
+  if (!query.code || query.error) {
+    return res.send(
       '<h1>Callback Query:</h1>' +
       '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
       '<p>An error has occurred: ' + query.error + '.<p>'
     );
   }
+
+	// Exchange the authorizatoin code for an access token and store it
+	// somewhere.  You'll need to pass it to the AcuitySchedulingOAuth
+  // constructor to make calls later on.
+  acuity.requestAccessToken(query.code, function (err, tokenResponse) {
+
+    if (err) return console.error(err);
+
+    // Store that access token somewhere:
+    if (tokenResponse.access_token) {
+      req.session.accessToken = tokenResponse.access_token;
+    }
+
+    // Make a sample request:
+    acuity.request('me', function (err, me) {
+
+      if (err) return console.error(err);
+
+      res.send(
+        '<h1>Callback Query:</h1>' +
+        '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
+        '<h1>Token Response:</h1>' +
+        '<pre>'+JSON.stringify(tokenResponse, null, '  ')+'</pre>' +
+        '<h1>GET /me:</h1>' +
+        '<pre>'+JSON.stringify(me, null, '  ')+'</pre>'
+      );
+    });
+  });
 });
 
 // Server:
