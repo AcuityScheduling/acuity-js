@@ -1,0 +1,26 @@
+<h1>Acuity Webhook Example</h1>
+
+<p>
+Acuity will post to <code>/webhook</code> when a new appointment is scheduled
+or an existing appointment is rescheduled or canceled.
+</p>
+
+<p>
+Acuity won't be able to access <code>127.0.0.1:8000</code> so you'll either
+have to take our word for it, or try this on your server!  Set your callback
+location under the
+<a href="https://secure.acuityscheduling.com/app.php?action=settings&key=webhook" target="_blank">Webhook integration</a>.
+</p>
+
+<h2>Arguments</h2>
+
+<p>
+All arguments are sent as <code>application/x-www-form-urlencoded</code> content.
+</p>
+
+<ul>
+	<li><b>action</b> either <code>scheduled</code> <code>rescheduled</code> or <code>canceled</code> depending on the action that initiated the webhook call</li>
+	<li><b>id</b> the ID for the appointment, get the appointment details for through the get appointment API call</li>
+	<li><b>calendarID</b> the ID of the calendar for the appointment</li>
+	<li><b>appointmentTypeID</b> the ID of the type of the appointment</li>
+</ul>

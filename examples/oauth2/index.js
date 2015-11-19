@@ -5,7 +5,7 @@ var _ = require('underscore');
 var bodyParser = require('body-parser');
 var request = require('request');
 var config = require('./config');
-var Acuity = require('../../src');
+var Acuity = require('../../');
 
 // Config:
 var port = process.env.PORT || 8000;
