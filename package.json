@@ -15,6 +15,6 @@
     "body-parser": "^1.12.3",
     "express": "^4.12.3",
     "express-session": "^1.12.1",
-    "underscore": "^1.8.3"
+    "hbs": "^4.0.0"
   }
 }

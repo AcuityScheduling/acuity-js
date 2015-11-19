@@ -1,26 +1,16 @@
 // Deps
-var express = require('express');
-var session = require('express-session');
-var _ = require('underscore');
-var bodyParser = require('body-parser');
-var request = require('request');
+var utils = require('../utils');
 var config = require('../config');
 var Acuity = require('../../');
 
-// Config:
-var port = process.env.PORT || 8000;
-var root = __dirname + '/';
-var sendFileConfig = { root: root };
 
 // App:
-var app = express();
-app.use(bodyParser.json());
-app.use(session({secret: 'pwnz0rz', saveUninitialized: true, resave: false}));
+var app = utils.express({views: __dirname}); 
+
 
 // Router:
 app.get('/', function (req, res) {
-  var acuity = Acuity.oauth(config);
-  res.sendFile('index.html', sendFileConfig);
+  res.render('index.html');
 });
 
 app.get('/authorize', function (req, res) {
@@ -32,18 +22,17 @@ app.get('/authorize', function (req, res) {
 
 app.get('/oauth2', function (req, res) {
 
-  var acuity = Acuity.oauth(_.extend({
-    accessToken: req.session.accessToken
-  }, config));
+  var options = Object.create(config);
+  options.accessToken = config.accessToken || req.session.accessToken;
+  var acuity = Acuity.oauth(options);
   var response = res;
   var query = req.query;
 
   if (!query.code || query.error) {
-    return response.send(
-      '<h1>Callback Query:</h1>' +
-      '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
-      '<p>An error has occurred: ' + query.error + '.<p>'
-    );
+    response.render('oauth2.html', {
+      error: query.error,
+      query: JSON.stringify(query, null, '  ')
+    });
   }
 
 	// Exchange the authorizatoin code for an access token and store it
@@ -63,27 +52,15 @@ app.get('/oauth2', function (req, res) {
 
       if (err) return console.error(err);
 
-      response.send(
-        '<h1>Callback Query:</h1>' +
-        '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
-        '<h1>Token Response:</h1>' +
-        '<pre>'+JSON.stringify(tokenResponse, null, '  ')+'</pre>' +
-        '<h1>GET /me:</h1>' +
-        '<pre>'+JSON.stringify(me, null, '  ')+'</pre>'
-      );
+      response.render('oauth2.html', {
+        query: JSON.stringify(query, null, '  '),
+        tokenResponse: JSON.stringify(tokenResponse, null, '  '),
+        me: JSON.stringify(me, null, '  ')
+      });
     });
   });
 });
 
-// Server:
-var server = app.listen(port, function () {
-  console.log('Listening on %s', port);
-});
-server.on('error', function (e) {
-  if (e.code === 'EADDRINUSE') {
-    console.error('Error listening on %s', port);
-  } else {
-    console.error(e);
-  }
-});
 
+// Server:
+var server = utils.start(app);

@@ -1,0 +1,14 @@
+<h1>OAuth2 Access</h1>
+
+<h2>Callback Query:</h2>
+<pre>{{query}}</pre>
+
+{{#if query.error}}
+  <p>An error has occurred: ' + query.error + '.<p>'
+{{else}}
+  <h2>Token Response:</h2>
+  <pre>{{tokenResponse}}</pre>
+
+  <h2>GET /me:</h2>
+  <pre>{{me}}</pre>
+{{/if}}

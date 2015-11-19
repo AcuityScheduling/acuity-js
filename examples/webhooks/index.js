@@ -1,26 +1,26 @@
 // Deps
 var express = require('express');
 var bodyParser = require('body-parser');
-var Acuity = require('../../');
 var config = require('../config');
+var utils = require('../utils');
+var Acuity = require('../../');
 
-// Config:
-var port = process.env.PORT || 8000;
-var root = __dirname + '/';
-var sendFileConfig = { root: root };
-var secret = config.apiKey;
 
 // App:
 var app = express();
+utils.configure(app, {views: __dirname});
+
 
 // Verification middleware for the webhook route
+var secret = config.apiKey;
 var verifyMiddleware = bodyParser.urlencoded({
   verify: Acuity.bodyParserVerify(secret)
 });
 
+
 // Router:
 app.get('/', function (req, res) {
-  res.sendFile('index.html', sendFileConfig);
+  res.render('index.html');
 });
 
 app.post('/webhook', verifyMiddleware, function (req, res) {
@@ -29,15 +29,6 @@ app.post('/webhook', verifyMiddleware, function (req, res) {
   res.send('');
 });
 
-// Server:
-var server = app.listen(port, function () {
-  console.log('Listening on %s', port);
-});
-server.on('error', function (e) {
-  if (e.code === 'EADDRINUSE') {
-    console.error('Error listening on %s', port);
-  } else {
-    console.error(e);
-  }
-});
 
+// Server:
+var server = utils.start(app);
