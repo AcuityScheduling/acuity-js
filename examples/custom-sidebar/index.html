@@ -1,13 +1,21 @@
-<h1>Yo!</h1>
+<h1>Acuity Custom Sidebar</h1>
 
 <p>
-Post to <pre>/custom-sidebar</pre> to generate sidebar content.
+Acuity will post to <code>/custom-sidebar</code> when appointment details are
+viewed and display the result in the appointment details sidebar.
+</p>
+
+<p>
+Acuity won't be able to access <code>127.0.0.1:8000</code> so you'll either
+have to take our word for it, or try this on your server!  Set your callback
+location under the
+<a href="https://secure.acuityscheduling.com/app.php?action=settings&key=sidebar" target="_blank">Custom Sidebar integration</a>.
 </p>
 
 <h2>Arguments</h2>
 
 <p>
-All arguments are sent as url-encoded form conntent.
+All arguments are sent as <code>application/x-www-form-urlencoded</code> content.
 </p>
 
 <ul>
