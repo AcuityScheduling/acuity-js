@@ -4,7 +4,7 @@ var session = require('express-session');
 var _ = require('underscore');
 var bodyParser = require('body-parser');
 var request = require('request');
-var config = require('./config');
+var config = require('../config');
 var Acuity = require('../../');
 
 // Config:

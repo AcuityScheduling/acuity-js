@@ -9,7 +9,7 @@
 Create a config file with your OAuth2 credentials to get started.  If you don't have OAuth2 credentials, please fill out this <a href="https://acuityscheduling.com/oauth2/register" target="_blank">registration form</a>.
 Start the example server by doing `PORT=8000 node examples/oauth2/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 
-##### Sample `examples/oauth2/config.json`
+##### Sample `examples/config.json`
 ```json
 {
 	"clientId": "N4HgVZbjHVp3HAkR",
