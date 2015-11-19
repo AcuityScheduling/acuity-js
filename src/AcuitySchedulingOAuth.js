@@ -30,10 +30,10 @@ AcuitySchedulingOAuth.prototype.getAuthorizeUrl = function (params) {
   }
 
   var query = {
-    'response_type':  'code',
-    'scope':          params.scope,
-    'client_id':      this.clientId,
-    'redirect_uri':   this.redirectUri
+    response_type:  'code',
+    scope:          params.scope,
+    client_id:      this.clientId,
+    redirect_uri:   this.redirectUri
   };
 
   if (params.state) {
@@ -53,11 +53,11 @@ AcuitySchedulingOAuth.prototype.requestAccessToken = function (code, cb) {
   var that = this;
   var options = {
     form: {
-      'grant_type':    'authorization_code',
-      'code':          code,
-      'redirect_uri':  this.redirectUri,
-      'client_id':     this.clientId,
-      'client_secret': this.clientSecret
+      grant_type:    'authorization_code',
+      code:          code,
+      redirect_uri:  this.redirectUri,
+      client_id:     this.clientId,
+      client_secret: this.clientSecret
     }
   };
 
@@ -76,23 +76,10 @@ AcuitySchedulingOAuth.prototype.isConnected = function () {
 };
 
 AcuitySchedulingOAuth.prototype.request = function (path, options, cb) {
-
   options = options || {};
-  if (!cb) {
-    cb = (typeof options === 'function') ? options : function () {};
-  }
-
-  var config = {
-    url: this.base + '/api/v1/' + path,
-    headers: {
-      'Authorization': 'Bearer ' + this.accessToken
-    }
-  };
-
-  return request(config, function (err, response, body) {
-    if (err) return cb(err);
-    cb(err, JSON.parse(body));
-  });
+  var headers = options.headers = options.headers || {};
+  headers.Authorization = headers.Authorization || 'Bearer ' + this.accessToken;
+  return this._request(path, options, cb);
 };
 
 module.exports = AcuitySchedulingOAuth;

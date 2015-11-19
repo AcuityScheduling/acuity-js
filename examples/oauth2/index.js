@@ -35,11 +35,11 @@ app.get('/oauth2', function (req, res) {
   var acuity = Acuity.oauth(_.extend({
     accessToken: req.session.accessToken
   }, config));
-
+  var response = res;
   var query = req.query;
 
   if (!query.code || query.error) {
-    return res.send(
+    return response.send(
       '<h1>Callback Query:</h1>' +
       '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
       '<p>An error has occurred: ' + query.error + '.<p>'
@@ -59,11 +59,11 @@ app.get('/oauth2', function (req, res) {
     }
 
     // Make a sample request:
-    acuity.request('me', function (err, me) {
+    acuity.request('me', function (err, res, me) {
 
       if (err) return console.error(err);
 
-      res.send(
+      response.send(
         '<h1>Callback Query:</h1>' +
         '<pre>'+JSON.stringify(query, null, '  ')+'</pre>' +
         '<h1>Token Response:</h1>' +
