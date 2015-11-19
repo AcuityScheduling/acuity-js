@@ -4,6 +4,7 @@
 
 var AcuityScheduling = require('./AcuityScheduling');
 var AcuitySchedulingOAuth = require('./AcuitySchedulingOAuth');
+var querystring = require('querystring');
 var crypto = require('crypto');
 
 var acuity = {
@@ -35,7 +36,58 @@ var acuity = {
       var signature = req.headers['X-Acuity-Signature'.toLowerCase()];
       acuity.verifyMessageSignature(secret, body, signature);
     };
-  }
+  },
+
+	/**
+	 * Generate embed code for $owner.
+	 *
+	 * @param {number} owner  The owner's id.
+	 * @param {object} options  Additional options.
+	 *	- width  Iframe width
+	 *	- height  Iframe height
+	 *	- query  Query string arguments
+	 */
+	getEmbedCode: function (owner, options) {
+
+    options = Object.create(options || {});
+    options.height  = options.height  || '800';
+    options.width   = options.width   || '100%';
+
+    var query = options.query   = options.query   || {};
+    query.owner = query.owner || owner;
+
+    // Encode options:
+    for (key in options) {
+      if (key === 'query') {
+        options[key] = querystring.stringify(options[key]);
+      } else {
+        options[key] = escape(options[key]);
+      }
+    }
+
+		return '' +
+			'<iframe src="https://app.acuityscheduling.com/schedule.php?'+options.query+'" width="'+options.width+'" height="'+options.height+'" frameBorder="0"></iframe>' +
+			'<script src="https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js" type="text/javascript"></script>';
+	}
 };
+
+/**
+ * Escape HTML entities
+ *
+ * Escape function borrowed from Mustache.
+ */
+var enitites = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
+function escape (s) {
+  return (s + '').replace(/[&<>"'\/]/g, function (c) {
+    return entities[c];
+  });
+}
 
 module.exports = acuity;
