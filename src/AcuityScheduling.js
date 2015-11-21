@@ -3,6 +3,7 @@
  */
 
 var request = require('request');
+var pkg = require('../package');
 
 function AcuityScheduling (config) {
 
@@ -29,11 +30,15 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
     json: true
   };
 
+  // Set configurable options:
   if (options.auth)     config.auth     = options.auth;
   if (options.body)     config.body     = options.body;
-  if (options.headers)  config.headers  = options.headers;
   if (options.method)   config.method   = options.method;
   if (options.qs)       config.qs       = options.qs;
+  config.headers =      options.headers || {};
+
+  // User agent:
+  config.headers['User-Agent'] = 'AcuityScheduling-js/' + pkg.version;
 
   return request(config, function (err, response, body) {
     if (err) return cb(err, response, body);
