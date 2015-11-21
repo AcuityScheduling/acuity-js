@@ -17,6 +17,7 @@ function AcuityScheduling (config) {
 }
 
 AcuityScheduling.base = 'https://acuityscheduling.com';
+AcuityScheduling.agent = 'AcuityScheduling-js/' + pkg.version;
 
 AcuityScheduling.prototype._request = function (path, options, cb) {
 
@@ -38,7 +39,7 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
   config.headers =      options.headers || {};
 
   // User agent:
-  config.headers['User-Agent'] = 'AcuityScheduling-js/' + pkg.version;
+  config.headers['User-Agent'] = AcuityScheduling.agent;
 
   return request(config, function (err, response, body) {
     if (err) return cb(err, response, body);
