@@ -62,7 +62,7 @@ Start the example server by doing `PORT=8000 node examples/oauth2/index.js` and 
 Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API key</a> credentials to get started.
 Start the example server by doing `PORT=8000 node examples/webhooks/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 
-##### Sample `examples/webhook/config.json`
+##### Sample `examples/config.json`
 ```json
 {
 	"apiKey": "abc123"
@@ -76,7 +76,7 @@ Start the example server by doing `PORT=8000 node examples/webhooks/index.js` an
 Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API key</a> credentials to get started.
 Start the example server by doing `PORT=8000 node examples/custom-sidebar/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 
-##### Sample `examples/custom-sidebar/config.json`
+##### Sample `examples/config.json`
 ```json
 {
 	"apiKey": "abc123"
