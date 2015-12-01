@@ -8,6 +8,14 @@
   },
   "author": "Carl Sutherland <carl@acuityscheduling.com>",
   "license": "MIT",
+  "homepage": "https://github.com/acuityscheduling/acuity-js",
+  "bugs": {
+    "url": "https://github.com/acuityscheduling/acuity-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acuityscheduling/acuity-js.git"
+  },
   "dependencies": {
     "request": "^2.66.0"
   },
