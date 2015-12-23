@@ -9,11 +9,13 @@
   "author": "Carl Sutherland <carl@acuityscheduling.com>",
   "license": "MIT",
   "keywords": [
+    "acuity",
+    "acuity scheduling",
     "api",
     "oauth",
     "oauth2",
-    "sdk",
-    "acuity scheduling"
+    "scheduling api",
+    "sdk"
   ],
   "homepage": "https://github.com/acuityscheduling/acuity-js",
   "bugs": {
