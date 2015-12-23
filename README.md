@@ -1,6 +1,6 @@
-# Acuity Scheduling JS Tool Kit
+# Acuity Scheduling API - JS Tool Kit
 
-Welcome to the Acuity Scheduling JS SDK.  This SDK provides examples and a standard library for integrating with [Acuity Scheduling](https://acuityscheduling.com/) using JS.  You can learn more about developing for Acuity Scheduling at [developers.acuityscheduling.com](https://developers.acuityscheduling.com/).
+Welcome to the Acuity Scheduling JS SDK.  This SDK provides examples and a standard library for integrating with the [Acuity Scheduling API](https://acuityscheduling.com/) using JS.  You can learn more about developing for Acuity Scheduling at [developers.acuityscheduling.com](https://developers.acuityscheduling.com/).
 
 ## Installation
 
