@@ -19,6 +19,10 @@ var acuity = {
 
   verifyMessageSignature: function (secret, body, signature) {
 
+    if (!secret || typeof secret !== 'string') {
+      throw new Error('Verify the message signature using your API key as the secret.');
+    }
+
     // Get hash of message using shared secret:
     var hasher = crypto.createHmac('sha256', secret);
     hasher.update(body);
