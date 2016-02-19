@@ -1,0 +1,81 @@
+<h1>Create an Appointment</h1>
+
+<p>
+This example walks you through booking an appointment with our <a href="https://developers.acuityscheduling.com/docs/post-appointments" target="_blank">create-appointment API</a>.
+First we <a href="https://developers.acuityscheduling.com/docs/appointment-types" target="_blank">fetch appointment types</a> and prompt the user to choose one.  Using the 
+selected appointment type, we check available <a href="https://developers.acuityscheduling.com/docs/get-availability-dates" target="_blank">dates</a> and 
+<a href="https://developers.acuityscheduling.com/docs/get-availability-times" target="_blank">times</a> from the API and ask the user to choose.  Finally, basic client 
+information is collected and we create the appointment.
+</p>
+
+{{#if appointment}}
+<h2>Appointment:</h2>
+<pre>
+{{appointment}}
+</pre>
+<a href="">Start Over</a>
+{{else}}
+
+<form method="post" action="">
+{{#if start}}
+<input type="submit" value="Start">
+{{else}}
+  {{#if appointmentTypes}}
+    <h2>Appointment Type:
+    <select name="appointmentTypeID">
+      <option disabled="disabled" selected="selected">Select an appointment type.</option>
+      {{#each appointmentTypes}}
+      <option value="{{id}}">{{name}}</option>
+      {{/each}}
+    </select>
+    </h2>
+  {{else}}
+    <h2>Appointment Type: {{appointmentType.name}}</h2>
+    {{#if dates}}
+      <h2>Date:
+      <select name="date">
+        <option disabled="disabled" selected="selected">Select a date.</option>
+        {{#each dates}}
+        <option value="{{date}}">{{date}}</option>
+        {{/each}}
+      </select>
+      </h2>
+    {{else}}
+      <h2>Date: {{date}}</h2>
+      {{#if times}}
+        <h2>Time:
+        <select name="time">
+          <option disabled="disabled" selected="selected">Select a time.</option>
+          {{#each times}}
+          <option value="{{time}}">{{time}}</option>
+          {{/each}}
+        </select>
+        </h2>
+      {{else}}
+        <h2>Time: {{time}}</h2>
+        <h2>Client Info:</h2>
+        <div>
+          <label>First Name:</label>
+          <input name="firstName">
+        </div>
+        <div>
+          <label>Last Name:</label>
+          <input name="lastName">
+        </div>
+        <div>
+          <label>E-mail:</label>
+          <input name="email">
+        </div>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+
+  <p>
+    <input type="submit" value="{{#if time}}Create Appointment{{else}}Next{{/if}}">
+    <a href="">Reset</a>
+  </p>
+
+{{/if}}
+</form>
+
+{{/if}}

@@ -1,6 +1,7 @@
 var express = require('express');
-var hbs = require('hbs');
 var session = require('express-session');
+var bodyParser = require('body-parser');
+var hbs = require('hbs');
 
 /**
  * Configure Express app
@@ -9,6 +10,9 @@ function configure (app, options) {
   app.set('view engine', 'html');
   app.set('views', options.views);
   app.engine('html', hbs.__express);
+  app.use(bodyParser.urlencoded({
+    extended: false
+  }));
   app.use(session({
     secret: 'pwnz0rz',
     saveUninitialized: true,
@@ -48,4 +52,4 @@ module.exports = {
   },
   configure: configure,
   start: start
-}
+};
