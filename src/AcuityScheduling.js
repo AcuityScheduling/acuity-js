@@ -26,8 +26,9 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
     cb = (typeof options === 'function') ? options : function () {};
   }
 
+  path = typeof path === 'string' ? path : '';
   var config = {
-    url: this.base + '/api/v1/' + path,
+    url: this.base + '/api/v1' + (path.charAt(0) === '/' ? '' : '/') + path,
     json: true
   };
 

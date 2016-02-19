@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
   var acuity = Acuity.basic(config);
   var response = res;
 
-  acuity.request('me', function (err, res, me) {
+  acuity.request('/me', function (err, res, me) {
     if (err) return console.error(err);
 
     var blocksOptions = {
@@ -26,13 +26,13 @@ app.get('/', function (req, res) {
         notes: 'Christmas!'
       }
     };
-    acuity.request('blocks', blocksOptions, function (err, res, block) {
+    acuity.request('/blocks', blocksOptions, function (err, res, block) {
       var appointmentsOptions = {
         qs: {
           max: 1
         }
       };
-      acuity.request('appointments', appointmentsOptions, function (err, res, appointments) {
+      acuity.request('/appointments', appointmentsOptions, function (err, res, appointments) {
 
         response.render('index.html', {
           me: JSON.stringify(me, null, '  '),
