@@ -16,6 +16,26 @@ Then require it in your app:
 var Acuity = require('acuityscheduling');
 ```
 
+## Hello World
+
+Here's a basic example to get started.  Just set your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API credentials</a> and run.
+
+```js
+var Acuity = require('acuityscheduling');
+var userId = null;
+var apiKey = null;
+
+var acuity = Acuity.basic({
+  userId: userId,
+  apiKey: apiKey
+});
+
+acuity.request('appointments', function (err, res, appointments) {
+  if (err) return console.error(err);
+  console.log(appointments);
+});
+```
+
 ## Examples
 
 You'll find several examples of different Acuity integrations in the [examples/](examples/) directory.  These examples cover:
@@ -24,20 +44,24 @@ You'll find several examples of different Acuity integrations in the [examples/]
 * [Webhooks](#webhooks)
 * [Custom Sidebar](#custom-sidebar)
 
-### Basic API Access
-
-[examples/basic/](examples/basic) is a basic API integration for a single account.
-
-Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API credentials</a> to get started.
-Start the example server by doing `PORT=8000 node examples/basic/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
-
 ##### Sample `examples/config.json`
+
+Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API credentials</a> to get started.  All examples
+share a common config file containing your Acuity `userId` and `apiKey` for basic API access and verifying callbacks.  [OAuth2 examples](#oauth2-api-access) require
+additional OAuth2 client account credentials.
+
 ```json
 {
 	"userId": 1,
 	"apiKey": "abc123"
 }
 ```
+
+### Basic API Access
+
+[examples/basic/](examples/basic) is a basic API integration for a single account.
+
+Start the example server by doing `PORT=8000 node examples/basic/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 
 ### OAuth2 API Access
 
@@ -59,26 +83,10 @@ Start the example server by doing `PORT=8000 node examples/oauth2/index.js` and 
 
 [examples/webhooks/](examples/webhooks) is a sample webhook integration.
 
-Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API key</a> credentials to get started.
 Start the example server by doing `PORT=8000 node examples/webhooks/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
-
-##### Sample `examples/config.json`
-```json
-{
-	"apiKey": "abc123"
-}
-```
 
 ### Custom Sidebar
 
 [examples/custom-sidebar/](examples/custom-sidebar) allows you to display custom information in the appointment details sidebar.
 
-Create a config file with your <a href="https://secure.acuityscheduling.com/app.php?key=api&action=settings" target="_blank">API key</a> credentials to get started.
 Start the example server by doing `PORT=8000 node examples/custom-sidebar/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
-
-##### Sample `examples/config.json`
-```json
-{
-	"apiKey": "abc123"
-}
-```
