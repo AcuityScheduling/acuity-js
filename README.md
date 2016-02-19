@@ -30,7 +30,7 @@ var acuity = Acuity.basic({
   apiKey: apiKey
 });
 
-acuity.request('appointments', function (err, res, appointments) {
+acuity.request('/appointments', function (err, res, appointments) {
   if (err) return console.error(err);
   console.log(appointments);
 });
