@@ -14,8 +14,8 @@ app.get('/', function (req, res) {
 });
 
 app.get('/authorize', function (req, res) {
-	// Redirect the user to the Acuity authorization endpoint.  You must
-	// choose a scope to work with.
+  // Redirect the user to the Acuity authorization endpoint.  You must
+  // choose a scope to work with.
   var acuity = Acuity.oauth(config);
   acuity.authorizeRedirect(res, {scope: 'api-v1'});
 });
@@ -35,8 +35,8 @@ app.get('/oauth2', function (req, res) {
     });
   }
 
-	// Exchange the authorizatoin code for an access token and store it
-	// somewhere.  You'll need to pass it to the AcuitySchedulingOAuth
+  // Exchange the authorization code for an access token and store it
+  // somewhere.  You'll need to pass it to the AcuitySchedulingOAuth
   // constructor to make calls later on.
   acuity.requestAccessToken(query.code, function (err, tokenResponse) {
 
