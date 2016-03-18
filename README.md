@@ -63,6 +63,16 @@ additional OAuth2 client account credentials.
 
 Start the example server by doing `PORT=8000 node examples/basic/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 
+### Create an Appointment
+
+[examples/create-appointment/](examples/create-appointment) is a more advanced API example for scheduling an appointment.  In this example, you'll see how to:
+
+* fetch appoinment types
+* find an available date and time
+* create the appointment
+
+Start the example server by doing `PORT=8000 node examples/custom-sidebar/index.js` and navigate to <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
+
 ### OAuth2 API Access
 
 [examples/oauth2/](examples/oauth2) is an OAuth2 API integration.  Use this to get connected with multiple Acuity accounts.
