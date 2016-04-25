@@ -1,6 +1,6 @@
 {
 	"name": "acuityscheduling",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Acuity Scheduling JS Dev Kit",
   "main": "src/index.js",
   "scripts": {
