@@ -4,7 +4,7 @@ Welcome to the Acuity Scheduling JS SDK.  This SDK provides examples and a stand
 
 ## Installation
 
-This package can be installed with npm:
+This package can be installed for node using npm:
 
 ```sh
 $ npm install --save acuityscheduling
@@ -15,6 +15,8 @@ Then require it in your app:
 ```js
 var Acuity = require('acuityscheduling');
 ```
+
+Currently our API is only for server-side access and our SDK won't work on the client-side.
 
 ## Hello World
 
