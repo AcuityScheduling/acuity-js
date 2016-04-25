@@ -25,6 +25,9 @@
     "type": "git",
     "url": "https://github.com/acuityscheduling/acuity-js.git"
   },
+  "engines": {
+    "node": ">=0.8.0"
+  },
   "dependencies": {
     "request": "^2.66.0"
   },
