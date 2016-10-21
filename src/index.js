@@ -80,7 +80,7 @@ var acuity = {
  *
  * Escape function borrowed from Mustache.
  */
-var enitites = {
+var entities = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
