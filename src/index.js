@@ -7,7 +7,7 @@ var AcuitySchedulingOAuth = require('./AcuitySchedulingOAuth');
 var querystring = require('querystring');
 var crypto = require('crypto');
 
-var acuity = {
+var acuity = {  //cached singleton instance
 
   basic: function (config) {
     return new AcuityScheduling(config);

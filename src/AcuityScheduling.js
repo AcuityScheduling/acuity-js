@@ -2,31 +2,24 @@
  * AcuityScheduling Class
  */
 
-var request = require('request');
+var requestLib = require("request-promise-native");
 var pkg = require('../package');
 
 function AcuityScheduling (config) {
-
   config = config || {};
-
   this.base = config.base || AcuityScheduling.base;
   this.apiKey = config.apiKey;
   this.userId = config.userId;
-
   return this;
 }
 
 AcuityScheduling.base = 'https://acuityscheduling.com';
 AcuityScheduling.agent = 'AcuityScheduling-js/' + pkg.version;
 
-AcuityScheduling.prototype._request = function (path, options, cb) {
-
+AcuityScheduling.prototype._request = function (path, options) {
   options = options || {};
-  if (!cb) {
-    cb = (typeof options === 'function') ? options : function () {};
-  }
-
   path = typeof path === 'string' ? path : '';
+
   var config = {
     url: this.base + '/api/v1' + (path.charAt(0) === '/' ? '' : '/') + path,
     json: true
@@ -42,20 +35,18 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
   // User agent:
   config.headers['User-Agent'] = AcuityScheduling.agent;
 
-  return request(config, function (err, response, body) {
-    if (err) return cb(err, response, body);
-    cb(err, response, body);
+  return requestLib(config).then(function(res){
+    return {res:res, req:config}; // expose both the res (result) and the req (request) object to the promise callback
   });
 };
 
-AcuityScheduling.prototype.request = function (path, options, cb) {
+AcuityScheduling.prototype.request = function (path, options) {
   options = options || {};
   options.auth = options.auth || {
     user: this.userId + '',
     pass: this.apiKey
   };
-  return this._request(path, options, cb);
+  return this._request(path, options);
 };
 
 module.exports = AcuityScheduling;
-

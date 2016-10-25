@@ -14,8 +14,7 @@ app.get('/', function (req, res) {
   var acuity = Acuity.basic(config);
   var response = res;
 
-  acuity.request('/me', function (err, res, me) {
-    if (err) return console.error(err);
+  acuity.request('/me').then(function (me) {
 
     var blocksOptions = {
       method: 'POST',
@@ -26,21 +25,28 @@ app.get('/', function (req, res) {
         notes: 'Christmas!'
       }
     };
-    acuity.request('/blocks', blocksOptions, function (err, res, block) {
+    console.log("Success from endpoint: "+me.req.url+" : You are "+me.res.email);
+
+    acuity.request('/blocks', blocksOptions).then(function (block) {
       var appointmentsOptions = {
         qs: {
           max: 1
         }
       };
-      acuity.request('/appointments', appointmentsOptions, function (err, res, appointments) {
-
+      acuity.request('/appointments', appointmentsOptions).then(function (appointments) {
         response.render('index.html', {
-          me: JSON.stringify(me, null, '  '),
-          block: JSON.stringify(block, null, '  '),
-          appointments: JSON.stringify(appointments, null, '  ')
+          me: JSON.stringify(me.res, null, '  '),
+          block: JSON.stringify(block.res, null, '  '),
+          appointments: JSON.stringify(appointments.res, null, '  ')
         });
+      }).catch(function(err){
+        return console.error("Error appointments: "+err);
       });
+    }).catch(function(err){
+      return console.error("Error blocks: "+err);
     });
+  }).catch(function(err){
+    return console.error("Error me: "+err);
   });
 });
 
