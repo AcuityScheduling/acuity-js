@@ -1,5 +1,5 @@
 {
-	"name": "acuityscheduling",
+  "name": "acuityscheduling",
   "version": "0.2.0",
   "description": "Acuity Scheduling JS Dev Kit",
   "main": "src/index.js",
@@ -29,8 +29,8 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-		"request": "2.75.0",
-		"request-promise-native": "1.0.3"
+    "request": "2.75.0",
+    "request-promise": "4.1.1"
   },
   "devDependencies": {
     "body-parser": "^1.12.3",

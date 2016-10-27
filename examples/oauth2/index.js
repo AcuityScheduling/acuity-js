@@ -53,12 +53,8 @@ app.get('/oauth2', function (req, res) {
         tokenResponse: JSON.stringify(dt.res, null, '  '),
         me: JSON.stringify(me, null, '  ')
       });
-    }).catch(function (err) {
-      return console.error("Error me: "+err);
-    });
-  }).catch(function(err){
-    return console.error("Error requestAccessToken: "+err);
-  });
+    })
+  })
 });
 
 

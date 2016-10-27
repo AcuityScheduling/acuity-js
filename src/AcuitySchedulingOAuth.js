@@ -4,7 +4,7 @@
 
 var AcuityScheduling = require('./AcuityScheduling');
 var querystring = require('querystring');
-var requestLib = require("request-promise-native");
+var requestLib = require("request-promise");
 var pkg = require('../package');
 
 function AcuitySchedulingOAuth (config) {
@@ -49,7 +49,7 @@ AcuitySchedulingOAuth.prototype.authorizeRedirect = function (res, params) {
   res.send();
 };
 
-AcuitySchedulingOAuth.prototype.requestAccessToken = function (code) {
+AcuitySchedulingOAuth.prototype.requestAccessToken = function (code, cb) {
 
   var that = this;
   var options = {
@@ -65,27 +65,33 @@ AcuitySchedulingOAuth.prototype.requestAccessToken = function (code) {
       redirect_uri:  this.redirectUri,
       client_id:     this.clientId,
       client_secret: this.clientSecret
-    }
+    },
+    resolveWithFullResponse: true
   };
 
 
-  return requestLib(options).then(function(tokenResponse){
-    if (tokenResponse.access_token) {
-      that.accessToken = tokenResponse.access_token;
+  return requestLib(options)
+  .then(function(tokenResponse){
+    if (tokenResponse.body.access_token) {
+      that.accessToken = tokenResponse.body.access_token;
     }
-    return {req: options, res:tokenResponse};
-  })
+    if(cb){cb(null, tokenResponse.body);}
+    return tokenResponse.body;
+  }).catch(function(err){
+    if (cb) {cb(err);}
+    throw err;
+  });
 };
 
 AcuitySchedulingOAuth.prototype.isConnected = function () {
   return this.accessToken ? true : false;
 };
 
-AcuitySchedulingOAuth.prototype.request = function (path, options) {
+AcuitySchedulingOAuth.prototype.request = function (path, options, cb) {
   options = options || {};
   var headers = options.headers = options.headers || {};
   headers.Authorization = headers.Authorization || 'Bearer ' + this.accessToken;
-  return this._request(path, options);
+  return this._request(path, options, cb);
 };
 
 module.exports = AcuitySchedulingOAuth;

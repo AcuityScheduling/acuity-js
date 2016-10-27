@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
         notes: 'Christmas!'
       }
     };
-    console.log("Success from endpoint: "+me.req.url+" : You are "+me.res.email);
+    console.log("Success from endpoint: "+me.request.uri.pathname+" : You are "+me.body.email);
 
     acuity.request('/blocks', blocksOptions).then(function (block) {
       var appointmentsOptions = {
@@ -35,19 +35,13 @@ app.get('/', function (req, res) {
       };
       acuity.request('/appointments', appointmentsOptions).then(function (appointments) {
         response.render('index.html', {
-          me: JSON.stringify(me.res, null, '  '),
-          block: JSON.stringify(block.res, null, '  '),
-          appointments: JSON.stringify(appointments.res, null, '  ')
+          me: JSON.stringify(me.body, null, '  '),
+          block: JSON.stringify(block.body, null, '  '),
+          appointments: JSON.stringify(appointments.body, null, '  ')
         });
-      }).catch(function(err){
-        return console.error("Error appointments: "+err);
-      });
-    }).catch(function(err){
-      return console.error("Error blocks: "+err);
-    });
-  }).catch(function(err){
-    return console.error("Error me: "+err);
-  });
+      })
+    })
+  })
 });
 
 
