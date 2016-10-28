@@ -37,10 +37,12 @@ app.post('/', function (request, response) {
   // First fetch possible appointment types:
   if (!appointmentTypes) {
     return acuity.request('/appointment-types').then(function (appointmentTypesR) {
-      request.session.appointmentTypes = appointmentTypesR.res;
+      request.session.appointmentTypes = appointmentTypesR.body;
       response.render('index.html', {
-        appointmentTypes: appointmentTypesR.res
+        appointmentTypes: appointmentTypesR.body
       });
+    }).catch(function (err) {
+      console.error(err);
     });
   }
 
@@ -54,7 +56,7 @@ app.post('/', function (request, response) {
   // Appointment type id:
   if (!appointmentType) {
     return response.render('index.html', {
-      appointmentTypes: appointmentTypesR.res
+      appointmentTypes: appointmentTypesR.body
     });
   }
 
@@ -63,9 +65,10 @@ app.post('/', function (request, response) {
     var month = new Date();
     month = month.getFullYear() + '-' + (month.getMonth() + 1);
     return acuity.request('/availability/dates?month=' + month + '&appointmentTypeID=' + appointmentType.id).then(function (datesR) {
+
       response.render('index.html', {
         appointmentType: appointmentType,
-        dates: datesR.res
+        dates: datesR.body
       });
     });
   }
@@ -76,7 +79,7 @@ app.post('/', function (request, response) {
       response.render('index.html', {
         appointmentType: appointmentType,
         date: date,
-        times: timesR.res
+        times: timesR.body
       });
     });
   }
@@ -103,7 +106,7 @@ app.post('/', function (request, response) {
   };
   return acuity.request('/appointments', options).then(function (appointmentR) {
     response.render('index.html', {
-      appointment: JSON.stringify(appointmentR.res, null, '  ')
+      appointment: JSON.stringify(appointmentR.body, null, '  ')
     });
   }).catch(function (err) {
     return console.error(err);

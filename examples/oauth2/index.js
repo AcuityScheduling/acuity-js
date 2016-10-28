@@ -41,8 +41,8 @@ app.get('/oauth2', function (req, res) {
   acuity.requestAccessToken(query.code).then(function (dt) {
 
     // Store that access token somewhere:
-    if (dt.res.access_token) {
-      req.session.accessToken = dt.res.access_token;
+    if (dt.body.access_token) {
+      req.session.accessToken = dt.body.access_token;
     }
 
     // Make a sample request:
@@ -50,7 +50,7 @@ app.get('/oauth2', function (req, res) {
 
       response.render('oauth2.html', {
         query: JSON.stringify(query, null, '  '),
-        tokenResponse: JSON.stringify(dt.res, null, '  '),
+        tokenResponse: JSON.stringify(dt.body, null, '  '),
         me: JSON.stringify(me, null, '  ')
       });
     })

@@ -45,8 +45,8 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
     return res;
   })
   .catch(function(err){
-    if (cb) {cb(err);}
-    throw err;
+    if (cb) {cb(err.error);}
+    throw err.error;
   });
 };
 
