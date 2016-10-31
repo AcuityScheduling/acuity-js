@@ -78,8 +78,11 @@ AcuitySchedulingOAuth.prototype.requestAccessToken = function (code, cb) {
     if(cb){cb(null, tokenResponse.body);}
     return tokenResponse.body;
   }).catch(function(err){
-    if (cb) {cb(err.error);}
-    throw err.error;
+    if (cb) {
+      cb(err.error);
+    } else {
+        throw err.error;
+    }
   });
 };
 
