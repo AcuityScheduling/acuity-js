@@ -5,7 +5,7 @@ var Acuity = require('../../');
 
 
 // App:
-var app = utils.express({views: __dirname}); 
+var app = utils.express({views: __dirname});
 
 
 // Router:
@@ -38,27 +38,23 @@ app.get('/oauth2', function (req, res) {
   // Exchange the authorization code for an access token and store it
   // somewhere.  You'll need to pass it to the AcuitySchedulingOAuth
   // constructor to make calls later on.
-  acuity.requestAccessToken(query.code, function (err, tokenResponse) {
-
-    if (err) return console.error(err);
+  acuity.requestAccessToken(query.code).then(function (dt) {
 
     // Store that access token somewhere:
-    if (tokenResponse.access_token) {
-      req.session.accessToken = tokenResponse.access_token;
+    if (dt.access_token) {
+      req.session.accessToken = dt.access_token;
     }
 
     // Make a sample request:
-    acuity.request('me', function (err, res, me) {
-
-      if (err) return console.error(err);
+    acuity.request('me').then(function (me) {
 
       response.render('oauth2.html', {
         query: JSON.stringify(query, null, '  '),
-        tokenResponse: JSON.stringify(tokenResponse, null, '  '),
-        me: JSON.stringify(me, null, '  ')
+        tokenResponse: JSON.stringify(dt, null, '  '),
+        me: JSON.stringify(me.data, null, '  ')
       });
-    });
-  });
+    }).catch(function(err){console.error("ERROR me: "+err.error+" with message: "+err.message);})
+  }).catch(function(err){console.error("ERROR requestAccessToken: "+err.error+" with message: "+err.message);})
 });
 
 

@@ -5,9 +5,9 @@
 var AcuityScheduling = require('./AcuityScheduling');
 var AcuitySchedulingOAuth = require('./AcuitySchedulingOAuth');
 var querystring = require('querystring');
-var crypto = require('crypto');
+var CryptoJS = require("crypto-js");
 
-var acuity = {
+var acuity = {  //cached singleton instance
 
   basic: function (config) {
     return new AcuityScheduling(config);
@@ -24,9 +24,7 @@ var acuity = {
     }
 
     // Get hash of message using shared secret:
-    var hasher = crypto.createHmac('sha256', secret);
-    hasher.update(body);
-    var hash = hasher.digest('base64');
+    var hash = CryptoJS.HmacSHA256(body, secret).toString(CryptoJS.enc.Base64);
 
     // Compare hash to Acuity signature:
     if (hash !== signature) {
@@ -80,7 +78,7 @@ var acuity = {
  *
  * Escape function borrowed from Mustache.
  */
-var enitites = {
+var entities = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
