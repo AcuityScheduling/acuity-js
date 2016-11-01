@@ -39,9 +39,9 @@ app.get('/', function (req, res) {
           block: JSON.stringify(block.body, null, '  '),
           appointments: JSON.stringify(appointments.body, null, '  ')
         });
-      })
-    })
-  })
+      }).catch(function(err){return console.error("Error appointments: "+JSON.stringify(err));})
+    }).catch(function(err){return console.error("Error blocks: "+JSON.stringify(err));})
+  }).catch(function(err){return console.error("Error me: "+JSON.stringify(err));})
 });
 
 
