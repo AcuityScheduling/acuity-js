@@ -4,7 +4,7 @@
 
 var AcuityScheduling = require('./AcuityScheduling');
 var querystring = require('querystring');
-var requestLib = require("request-promise");
+var axios = require("axios");
 var pkg = require('../package');
 
 function AcuitySchedulingOAuth (config) {
@@ -52,36 +52,26 @@ AcuitySchedulingOAuth.prototype.authorizeRedirect = function (res, params) {
 AcuitySchedulingOAuth.prototype.requestAccessToken = function (code, cb) {
 
   var that = this;
-  var options = {
-    method: 'POST',
-    url: this.base + '/oauth2/token',
-    json: true,
-    headers: {
-      'User-Agent': AcuityScheduling.agent
-    },
-    form: {
-      grant_type:    'authorization_code',
-      code:          code,
-      redirect_uri:  this.redirectUri,
-      client_id:     this.clientId,
-      client_secret: this.clientSecret
-    },
-    resolveWithFullResponse: true
-  };
+  var formData = querystring.stringify({
+    grant_type:    'authorization_code',
+    code:          code,
+    redirect_uri:  this.redirectUri,
+    client_id:     this.clientId,
+    client_secret: this.clientSecret
+  });
 
-
-  return requestLib(options)
-  .then(function(tokenResponse){
-    if (tokenResponse.body.access_token) {
-      that.accessToken = tokenResponse.body.access_token;
+  return axios.post(this.base + '/oauth2/token', formData, {headers: {'User-Agent': AcuityScheduling.agent}})
+  .then(function(res){
+    if (res.data.access_token) {
+      that.accessToken = res.data.access_token;
     }
-    if(cb){cb(null, tokenResponse.body);}
-    return tokenResponse.body;
+    if(cb){cb(null, res.data);}
+    return res.data;
   }).catch(function(err){
     if (cb) {
-      cb(err.error);
+      cb(err.response.data);
     } else {
-        throw err.error;
+        throw err.response.data;
     }
   });
 };

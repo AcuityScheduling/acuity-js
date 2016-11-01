@@ -37,13 +37,11 @@ app.post('/', function (request, response) {
   // First fetch possible appointment types:
   if (!appointmentTypes) {
     return acuity.request('/appointment-types').then(function (appointmentTypesR) {
-      request.session.appointmentTypes = appointmentTypesR.body;
+      request.session.appointmentTypes = appointmentTypesR.data;
       response.render('index.html', {
-        appointmentTypes: appointmentTypesR.body
+        appointmentTypes: appointmentTypesR.data
       });
-    }).catch(function (err) {
-      console.error(err);
-    });
+    }).catch(function(err){return console.error("Error appointment-types: "+err.error+" with message: "+err.message);})
   }
 
   // Grab the selected appointment type:
@@ -56,7 +54,7 @@ app.post('/', function (request, response) {
   // Appointment type id:
   if (!appointmentType) {
     return response.render('index.html', {
-      appointmentTypes: appointmentTypesR.body
+      appointmentTypes: appointmentTypesR.data
     });
   }
 
@@ -68,7 +66,7 @@ app.post('/', function (request, response) {
 
       response.render('index.html', {
         appointmentType: appointmentType,
-        dates: datesR.body
+        dates: datesR.data
       });
     });
   }
@@ -79,7 +77,7 @@ app.post('/', function (request, response) {
       response.render('index.html', {
         appointmentType: appointmentType,
         date: date,
-        times: timesR.body
+        times: timesR.data
       });
     });
   }
@@ -96,7 +94,7 @@ app.post('/', function (request, response) {
   // Create appointment:
   var options = {
     method: 'POST',
-    body: {
+    data: {
       appointmentTypeID: appointmentTypeID,
       datetime:          time,
       firstName:         body.firstName,
@@ -106,11 +104,9 @@ app.post('/', function (request, response) {
   };
   return acuity.request('/appointments', options).then(function (appointmentR) {
     response.render('index.html', {
-      appointment: JSON.stringify(appointmentR.body, null, '  ')
+      appointment: JSON.stringify(appointmentR.data, null, '  ')
     });
-  }).catch(function (err) {
-    return console.error(err);
-  });
+  }).catch(function(err){return console.error("Error appointments: "+err.error+" with message: "+err.message);})
 });
 
 

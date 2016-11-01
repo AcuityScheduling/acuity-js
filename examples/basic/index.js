@@ -18,14 +18,14 @@ app.get('/', function (req, res) {
 
     var blocksOptions = {
       method: 'POST',
-      body: {
+      data: {
         start: '2015-12-24',
         end: '2015-12-26',
         calendarID: 1,
         notes: 'Christmas!'
       }
     };
-    console.log("Success from endpoint: "+me.request.uri.pathname+" : You are "+me.body.email);
+    console.log("Success from endpoint: "+me.config.url+" : You are "+me.data.email);
 
     acuity.request('/blocks', blocksOptions).then(function (block) {
       var appointmentsOptions = {
@@ -35,13 +35,13 @@ app.get('/', function (req, res) {
       };
       acuity.request('/appointments', appointmentsOptions).then(function (appointments) {
         response.render('index.html', {
-          me: JSON.stringify(me.body, null, '  '),
-          block: JSON.stringify(block.body, null, '  '),
-          appointments: JSON.stringify(appointments.body, null, '  ')
+          me: JSON.stringify(me.data, null, '  '),
+          block: JSON.stringify(block.data, null, '  '),
+          appointments: JSON.stringify(appointments.data, null, '  ')
         });
-      }).catch(function(err){return console.error("Error appointments: "+JSON.stringify(err));})
-    }).catch(function(err){return console.error("Error blocks: "+JSON.stringify(err));})
-  }).catch(function(err){return console.error("Error me: "+JSON.stringify(err));})
+      }).catch(function(err){return console.error("Error appointments: "+err.error+" with message: "+err.message);})
+    }).catch(function(err){return console.error("Error blocks: "+err.error+" with message: "+err.message);})
+  }).catch(function(err){return console.error("Error me: "+err.error+" with message: "+err.message);})
 });
 
 
