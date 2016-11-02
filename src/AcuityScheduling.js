@@ -4,6 +4,7 @@
 
 var axios = require("axios");
 var pkg = require('../package');
+var querystring = require('querystring');
 
 function AcuityScheduling (config) {
   config = config || {};
@@ -31,7 +32,7 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
   if (options.auth)     config.auth     = options.auth;
   if (options.body)     config.data     = options.body;
   if (options.method)   config.method   = options.method;
-  if (options.qs) config.params = options.qs;
+  if (options.qs) config.params = querystring.stringify(options.qs);
   config.headers =      options.headers || {};
 
   // User agent:
