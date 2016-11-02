@@ -29,9 +29,9 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
 
   // Set configurable options:
   if (options.auth)     config.auth     = options.auth;
-  if (options.data)     config.data     = options.data;
+  if (options.body)     config.data     = options.body;
   if (options.method)   config.method   = options.method;
-  if (options.paramsSerializer) config.paramsSerializer = options.paramsSerializer;
+  if (options.qs) config.params = options.qs;
   config.headers =      options.headers || {};
 
   // User agent:

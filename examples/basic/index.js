@@ -14,34 +14,34 @@ app.get('/', function (req, res) {
   var acuity = Acuity.basic(config);
   var response = res;
 
-  acuity.request('/me').then(function (me) {
+  acuity.request('/me', function (err, res, me) {
+    if (err) return console.error(err);
 
     var blocksOptions = {
       method: 'POST',
-      data: {
+      body: {
         start: '2015-12-24',
         end: '2015-12-26',
         calendarID: 1,
         notes: 'Christmas!'
       }
     };
-    console.log("Success from endpoint: "+me.config.url+" : You are "+me.data.email);
-
-    acuity.request('/blocks', blocksOptions).then(function (block) {
+    acuity.request('/blocks', blocksOptions, function (err, res, block) {
       var appointmentsOptions = {
         qs: {
           max: 1
         }
       };
-      acuity.request('/appointments', appointmentsOptions).then(function (appointments) {
+      acuity.request('/appointments', appointmentsOptions, function (err, res, appointments) {
+
         response.render('index.html', {
-          me: JSON.stringify(me.data, null, '  '),
-          block: JSON.stringify(block.data, null, '  '),
-          appointments: JSON.stringify(appointments.data, null, '  ')
+          me: JSON.stringify(me, null, '  '),
+          block: JSON.stringify(block, null, '  '),
+          appointments: JSON.stringify(appointments, null, '  ')
         });
-      }).catch(function(err){return console.error("Error appointments: "+err.error+" with message: "+err.message);})
-    }).catch(function(err){return console.error("Error blocks: "+err.error+" with message: "+err.message);})
-  }).catch(function(err){return console.error("Error me: "+err.error+" with message: "+err.message);})
+      });
+    });
+  });
 });
 
 
