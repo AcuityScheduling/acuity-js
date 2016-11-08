@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 app.post('/custom-sidebar', verifyMiddleware, function (req, res) {
   setTimeout(function () {
     res.render('sidebar.html', {
-      details: JSON.stringify(req.data, null, '  ')
+      details: JSON.stringify(req.body, null, '  ')
     });
   }, 500);
 });

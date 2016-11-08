@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 
 app.post('/webhook', verifyMiddleware, function (req, res) {
   // The message is authentic:
-  console.log("The message is authentic:\n" + JSON.stringify(req.data, null, '  '));
+  console.log("The message is authentic:\n" + JSON.stringify(req.body, null, '  '));
   res.send('');
 });
 
