@@ -44,10 +44,15 @@ AcuityScheduling.prototype._request = function (path, options, cb) {
     return res;
   })
   .catch(function(err){
-    if (cb) {
-      cb(err.response.data);
+    if(err.response && err.response.data){  // if we got an error response from the server
+      if (cb) {cb(null, err.response, err.response.data);}  // pass it to the cb
+      return err.response;  //return it's promise
+    }
+    // otherwise
+    if (cb) { // if there's a callback
+      cb(err);  // pass the error to it
     } else {
-        throw err.response.data;
+      throw err;  // throw the generic error
     }
   });
 };
