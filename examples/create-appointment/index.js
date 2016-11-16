@@ -1,4 +1,5 @@
 // Deps:
+var bodyParser = require('body-parser');
 var config = require('../config');
 var Acuity = require('../../');
 var utils = require('../utils');
@@ -6,6 +7,9 @@ var utils = require('../utils');
 
 // App:
 var app = utils.express({views: __dirname});
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 
 // Router:
