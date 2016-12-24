@@ -5,7 +5,6 @@
 var AcuityScheduling = require('./AcuityScheduling');
 var querystring = require('querystring');
 var request = require('request');
-var pkg = require('../package');
 
 function AcuitySchedulingOAuth (config) {
 
