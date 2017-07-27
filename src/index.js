@@ -42,16 +42,16 @@ var acuity = {
     };
   },
 
-	/**
-	 * Generate embed code for $owner.
-	 *
-	 * @param {number} owner  The owner's id.
-	 * @param {object} options  Additional options.
-	 *	- width  Iframe width
-	 *	- height  Iframe height
-	 *	- query  Query string arguments
-	 */
-	getEmbedCode: function (owner, options) {
+  /**
+   * Generate embed code for $owner.
+   *
+   * @param {number} owner  The owner's id.
+   * @param {object} options  Additional options.
+   *	- width  Iframe width
+   *	- height  Iframe height
+   *	- query  Query string arguments
+   */
+  getEmbedCode: function (owner, options) {
 
     options = Object.create(options || {});
     options.height  = options.height  || '800';
@@ -69,10 +69,10 @@ var acuity = {
       }
     }
 
-		return '' +
-			'<iframe src="https://app.acuityscheduling.com/schedule.php?'+options.query+'" width="'+options.width+'" height="'+options.height+'" frameBorder="0"></iframe>' +
-			'<script src="https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js" type="text/javascript"></script>';
-	}
+    return '' +
+      '<iframe src="https://app.acuityscheduling.com/schedule.php?'+options.query+'" width="'+options.width+'" height="'+options.height+'" frameBorder="0"></iframe>' +
+      '<script src="https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js" type="text/javascript"></script>';
+  }
 };
 
 /**
