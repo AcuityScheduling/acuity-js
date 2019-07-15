@@ -1,6 +1,5 @@
 var express = require('express');
 var session = require('express-session');
-var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
 /**
@@ -10,7 +9,7 @@ function configure (app, options) {
   app.set('view engine', 'html');
   app.set('views', options.views);
   app.engine('html', hbs.__express);
-  app.use(bodyParser.urlencoded({
+  app.use(express.urlencoded({
     extended: false
   }));
   app.use(session({

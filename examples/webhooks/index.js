@@ -1,6 +1,5 @@
 // Deps
 var express = require('express');
-var bodyParser = require('body-parser');
 var config = require('../config');
 var utils = require('../utils');
 var Acuity = require('../../');
@@ -8,12 +7,11 @@ var Acuity = require('../../');
 
 // App:
 var app = express();
-utils.configure(app, {views: __dirname});
 
 
 // Verification middleware for the webhook route
 var secret = config.apiKey;
-var verifyMiddleware = bodyParser.urlencoded({
+var verifyMiddleware = express.urlencoded({
   verify: Acuity.bodyParserVerify(secret)
 });
 
@@ -31,4 +29,5 @@ app.post('/webhook', verifyMiddleware, function (req, res) {
 
 
 // Server:
+utils.configure(app, {views: __dirname});
 var server = utils.start(app);
