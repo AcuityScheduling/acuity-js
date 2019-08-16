@@ -71,7 +71,7 @@ var acuity = {
 
     return '' +
       '<iframe src="https://app.acuityscheduling.com/schedule.php?'+options.query+'" width="'+options.width+'" height="'+options.height+'" frameBorder="0"></iframe>' +
-      '<script src="https://d3gxy7nm8y4yjr.cloudfront.net/js/embed.js" type="text/javascript"></script>';
+      '<script src="https://embed.acuityscheduling.com/js/embed.js" type="text/javascript"></script>';
   }
 };
 
